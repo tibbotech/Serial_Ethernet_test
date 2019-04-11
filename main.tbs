@@ -1,0 +1,86 @@
+
+'	This project implements the simplest "serial device server" possible. There is a single TCP
+'connection (passive opens only). Once this connection is established, whatever is received
+'through TCP is sent out via the serial port and vice versa.
+'
+'	ATTENTION! READ THE COMMENTS IN CODE! YOU MIGHT NEED TO CHANGE THE PROGRAM! For example,
+'you may need to set correct IP address, baudrate, etc.
+
+
+include "global.tbh"
+
+'====================================================================
+
+'This event is always generated first. We use it to setup everything- a socket for TCP
+'connection, serial port, etc.
+'ATTENTION! Read this code- you might need to do some parameter changes!
+sub on_sys_init()
+
+net.ip= "192.168.1.115"
+	
+	sock.num=0
+	sock.protocol=PL_SOCK_PROTOCOL_TCP
+	sock.inconmode=PL_SOCK_INCONMODE_ANY_IP_ANY_PORT
+	sock.reconmode=PL_SOCK_RECONMODE_1
+	sock.localportlist="1001"
+	
+	sock.txbuffrq(1)
+	sock.varbuffrq(1)
+	sock.rxbuffrq(1)
+	
+ser.rxbuffrq(1)
+
+ser.txbuffrq(1)
+
+sys.buffalloc()
+
+
+ser.baudrate=ser.div9600/4 ' -> 38400 baud
+
+ser.bits=PL_SER_BB_8
+
+ser.parity=PL_SER_PR_NONE
+
+ser.flowcontrol=PL_SER_FC_DISABLED	'Here we use RTS/CTS flow control
+
+ser.interface=PL_SER_SI_HALFDUPLEX
+
+ser.esctype=PL_SER_ET_DISABLED
+
+ser.interchardelay=0
+
+ser.enabled=YES
+
+end sub
+
+'Generated when the MD button on your device is pressed
+sub on_button_pressed()
+	dim x as string
+	x="\xB3 what up\x00"
+	ser.num=0
+	sock.num=0
+	ser.setdata(x)
+	ser.send
+	sock.setdata(x)
+	sock.send
+end sub
+
+'This event is generated whenever there is an incoming serial data to process.
+'All arriving TCP data is sent out through the TCP connection.
+sub on_ser_data_arrival()
+	dim x as string
+	sock.num=0
+	x=ser.getdata(sock.txfree)
+	sock.setdata(x)
+	sock.send
+end sub
+
+'This event is generated whenever there is an incoming TCP data to process.
+'All arriving TCP data is sent out through the serial port.
+sub on_sock_data_arrival()
+	dim x as string
+	ser.num=0
+	x=sock.getdata(ser.txfree)
+	ser.setdata(x)
+	ser.send
+end sub

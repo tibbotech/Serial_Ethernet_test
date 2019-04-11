@@ -1,0 +1,43 @@
+[project]
+version=1
+platform=TPP2W(G2)
+src_lib_ver=2_01_00
+name=Seial button test
+output=Seial button test.tpc
+debug=on
+defines= /dLCD_TYPE=SAMSUNG_S6B0108 /dOBJECT_LCD=LCD_ENABLED /dOBJECT_FD=FD_ENABLED /dOBJECT_KP=KP_ENABLED /dOBJECT_WLN=WLN_ENABLED
+transport=udp_winpcap
+[address1]
+platform=EM2000W
+transport=udp_broadcast
+address=
+[address2]
+platform=EM2000W
+transport=udp_winpcap
+address=0.36.119.82.213.164
+[address3]
+platform=EM1000W
+transport=udp_winpcap
+address=0.127.0.0.30.218
+[address4]
+platform=DS1100
+transport=udp_winpcap
+address=0.0.0.208.55.57
+[address5]
+platform=TPP2W(G2)
+transport=udp_winpcap
+address=0.36.119.82.228.6
+[file1]
+path=main.tbs
+type=basic
+format=
+condition=
+locked=no
+location=
+[file2]
+path=global.tbh
+type=header
+format=
+condition=
+locked=no
+location=
