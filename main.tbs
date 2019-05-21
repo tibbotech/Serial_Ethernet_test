@@ -28,28 +28,19 @@ net.ip= "192.168.1.115"
 	sock.varbuffrq(1)
 	sock.rxbuffrq(1)
 	
-ser.rxbuffrq(1)
-
-ser.txbuffrq(1)
-
-sys.buffalloc()
+	ser.rxbuffrq(1)
+	ser.txbuffrq(1)
+	sys.buffalloc()
 
 
-ser.baudrate=ser.div9600/4 ' -> 38400 baud
-
-ser.bits=PL_SER_BB_8
-
-ser.parity=PL_SER_PR_NONE
-
-ser.flowcontrol=PL_SER_FC_DISABLED	'Here we use RTS/CTS flow control
-
-ser.interface=PL_SER_SI_HALFDUPLEX
-
-ser.esctype=PL_SER_ET_DISABLED
-
-ser.interchardelay=0
-
-ser.enabled=YES
+	ser.baudrate=ser.div9600/4 ' -> 38400 baud
+	ser.bits=PL_SER_BB_8
+	ser.parity=PL_SER_PR_NONE
+	ser.flowcontrol=PL_SER_FC_DISABLED	'Here we use RTS/CTS flow control
+	ser.interface=PL_SER_SI_FULLDUPLEX
+	ser.esctype=PL_SER_ET_DISABLED
+	ser.interchardelay=0
+	ser.enabled=YES
 
 end sub
 
